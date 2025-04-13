@@ -11,6 +11,7 @@ import jakarta.validation.Valid;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -27,6 +28,12 @@ public class UserController {
     public ResponseDTO getUsers() {
         var users = userService.getUsers();
         return new ResponseDTO(true, "Users fetched successfully", users, HttpStatus.OK);
+    }
+
+    @GetMapping("/{idUser}")
+    public ResponseDTO getMethodName(@PathVariable("idUser") int idUser) {
+        var user = userService.getUser(idUser);
+        return new ResponseDTO(true, "User fetched successfully", user, HttpStatus.OK);
     }
 
     @GetMapping("/patients")
