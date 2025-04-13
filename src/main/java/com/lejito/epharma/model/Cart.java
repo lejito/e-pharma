@@ -30,7 +30,7 @@ public class Cart {
                     medicine.getStock()));
         }
 
-        if (!medicine.isPrescriptionOnly()) {
+        if (medicine.isPrescriptionOnly()) {
             throw new BadRequestError(String.format("Medicine %s requires a prescription", medicine.getName()));
         }
 
