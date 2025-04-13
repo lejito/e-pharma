@@ -16,11 +16,7 @@ import lombok.Data;
 @Service
 @Data
 public class UserService {
-    private List<User> users;
-
-    public UserService() {
-        users = new ArrayList<>();
-    }
+    private List<User> users = new ArrayList<>();
 
     public List<Patient> getPatients() {
         List<Patient> patients = new ArrayList<>();
