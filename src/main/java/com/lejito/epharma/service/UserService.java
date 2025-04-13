@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.lejito.epharma.error.BadRequestError;
+import com.lejito.epharma.error.NotFoundError;
 import com.lejito.epharma.model.Cart;
 import com.lejito.epharma.model.Doctor;
 import com.lejito.epharma.model.Medicine;
@@ -43,7 +45,7 @@ public class UserService {
                 return user;
             }
         }
-        throw new RuntimeException("Invalid email or password");
+        throw new BadRequestError("Invalid email or password");
     }
 
     public User getUser(int idUser) {
@@ -52,21 +54,15 @@ public class UserService {
                 return user;
             }
         }
-        throw new RuntimeException("User not found");
+        throw new NotFoundError("User not found");
     }
 
     private Patient getPatient(int idPatient) {
-        for (int i = 0; i < users.size(); i++) {
-            User user = users.get(i);
-            if (user.getId() == idPatient) {
-                if (user instanceof Patient) {
-                    return (Patient) user;
-                } else {
-                    throw new RuntimeException("User is not a patient");
-                }
-            }
+        User user = getUser(idPatient);
+        if (user instanceof Patient) {
+            return (Patient) user;
         }
-        throw new RuntimeException("User not found");
+        throw new NotFoundError("Patient not found");
     }
 
     public Cart getCart(int idPatient) {
