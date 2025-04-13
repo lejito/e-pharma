@@ -96,6 +96,10 @@ public class Cart {
     }
 
     public void confirm() {
+        if (items.isEmpty()) {
+            throw new BadRequestError("Cart is empty");
+        }
+
         List<Item> deductedItems = new ArrayList<>();
         try {
             for (Item item : items) {
