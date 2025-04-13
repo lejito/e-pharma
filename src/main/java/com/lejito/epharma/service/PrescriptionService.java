@@ -40,19 +40,22 @@ public class PrescriptionService {
         throw new NotFoundError("Prescription not found");
     }
 
-    public void addPrescription(Patient patient, Medicine medicine, int quantity) {
+    public Prescription addPrescription(Patient patient, Medicine medicine, int quantity) {
         int id = prescriptions.size() + 1;
         Prescription prescription = new Prescription(id, patient, medicine, quantity);
         prescriptions.add(prescription);
+        return prescription;
     }
 
-    public void changeAvailability(int idPrescription, boolean available) {
+    public Prescription changeAvailability(int idPrescription, boolean available) {
         Prescription prescription = getPrescription(idPrescription);
         prescription.setAvailable(available);
+        return prescription;
     }
 
-    public void removePrescription(int idPrescription) {
+    public Prescription removePrescription(int idPrescription) {
         Prescription prescription = getPrescription(idPrescription);
         prescriptions.remove(prescription);
+        return prescription;
     }
 }
