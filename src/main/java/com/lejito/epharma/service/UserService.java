@@ -57,7 +57,7 @@ public class UserService {
         throw new NotFoundError("User not found");
     }
 
-    private Patient getPatient(int idPatient) {
+    public Patient getPatient(int idPatient) {
         User user = getUser(idPatient);
         if (user instanceof Patient) {
             return (Patient) user;
