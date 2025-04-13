@@ -22,6 +22,9 @@ public class Patient extends User {
     }
 
     public void addPrescriptionToCart(Prescription prescription) {
+        if (prescription.getPatient().getId() != this.getId()) {
+            throw new RuntimeException("Prescription does not belong to this patient");
+        }
         cart.addPrescription(prescription);
     }
 

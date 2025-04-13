@@ -58,6 +58,10 @@ public class Cart {
     }
 
     public void addPrescription(Prescription prescription) {
+        if (!prescription.isAvailable()) {
+            throw new RuntimeException("Prescription is not available");
+        }
+
         for (Prescription presc : prescriptions) {
             if (presc.getId() == prescription.getId()) {
                 throw new RuntimeException("Prescription already exists in cart");
