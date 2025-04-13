@@ -3,6 +3,7 @@ package com.lejito.epharma.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.lejito.epharma.error.BadRequestError;
 import com.lejito.epharma.error.NotFoundError;
 
@@ -85,6 +86,7 @@ public class Cart {
         throw new NotFoundError("Prescription not found in cart");
     }
 
+    @JsonProperty("totalPrice")
     public float calculatePrice() {
         float total = 0;
         for (Item item : items) {
