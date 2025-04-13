@@ -1,5 +1,7 @@
 package com.lejito.epharma.model;
 
+import com.lejito.epharma.error.BadRequestError;
+
 import lombok.Data;
 
 @Data
@@ -26,7 +28,7 @@ public class Medicine {
 
     public void decrementStock(int quantity) {
         if (stock < quantity) {
-            throw new RuntimeException(String.format("Not enough stock for %s (only %d available)", name, stock));
+            throw new BadRequestError(String.format("Not enough stock for %s (only %d available)", name, stock));
         }
         stock -= quantity;
     }

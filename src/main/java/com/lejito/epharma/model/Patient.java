@@ -1,5 +1,7 @@
 package com.lejito.epharma.model;
 
+import com.lejito.epharma.error.BadRequestError;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -23,7 +25,7 @@ public class Patient extends User {
 
     public void addPrescriptionToCart(Prescription prescription) {
         if (prescription.getPatient().getId() != this.getId()) {
-            throw new RuntimeException("Prescription does not belong to this patient");
+            throw new BadRequestError("Prescription does not belong to this patient");
         }
         cart.addPrescription(prescription);
     }

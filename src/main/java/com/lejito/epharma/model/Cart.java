@@ -3,6 +3,9 @@ package com.lejito.epharma.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.lejito.epharma.error.BadRequestError;
+import com.lejito.epharma.error.NotFoundError;
+
 import lombok.Data;
 
 @Data
@@ -22,12 +25,12 @@ public class Cart {
 
     public void addMedicine(Medicine medicine, int quantity) {
         if (!medicine.hasStock(quantity)) {
-            throw new RuntimeException(String.format("Not enough stock for %s (only %d available)", medicine.getName(),
+            throw new BadRequestError(String.format("Not enough stock for %s (only %d available)", medicine.getName(),
                     medicine.getStock()));
         }
 
         if (!medicine.isPrescriptionOnly()) {
-            throw new RuntimeException(String.format("Medicine %s requires a prescription", medicine.getName()));
+            throw new BadRequestError(String.format("Medicine %s requires a prescription", medicine.getName()));
         }
 
         for (Item item : items) {
@@ -43,7 +46,7 @@ public class Cart {
         for (Item item : items) {
             if (item.getMedicine().getId() == medicine.getId()) {
                 if (item.getQuantity() < quantity) {
-                    throw new RuntimeException(
+                    throw new BadRequestError(
                             String.format("Not enough quantity of %s in cart (only %d available)", medicine.getName(),
                                     item.getQuantity()));
                 } else if (item.getQuantity() == quantity) {
@@ -54,17 +57,17 @@ public class Cart {
                 return;
             }
         }
-        throw new RuntimeException(String.format("Medicine %s not found in cart", medicine.getName()));
+        throw new BadRequestError(String.format("Medicine %s not found in cart", medicine.getName()));
     }
 
     public void addPrescription(Prescription prescription) {
         if (!prescription.isAvailable()) {
-            throw new RuntimeException("Prescription is not available");
+            throw new BadRequestError("Prescription is not available");
         }
 
         for (Prescription presc : prescriptions) {
             if (presc.getId() == prescription.getId()) {
-                throw new RuntimeException("Prescription already exists in cart");
+                throw new BadRequestError("Prescription already exists in cart");
             }
         }
         addMedicine(prescription.getMedicine(), prescription.getQuantity());
@@ -79,7 +82,7 @@ public class Cart {
                 return;
             }
         }
-        throw new RuntimeException("Prescription not found in cart");
+        throw new NotFoundError("Prescription not found in cart");
     }
 
     public float calculatePrice() {

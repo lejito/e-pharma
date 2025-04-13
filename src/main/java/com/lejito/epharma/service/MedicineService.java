@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.lejito.epharma.error.NotFoundError;
 import com.lejito.epharma.model.Medicine;
 
 import lombok.Data;
@@ -27,7 +28,7 @@ public class MedicineService {
                 return medicine;
             }
         }
-        throw new RuntimeException("Medicine not found");
+        throw new NotFoundError("Medicine not found");
     }
 
     public void addMedicine(String name, String description, float price, int stock, boolean prescriptionOnly) {

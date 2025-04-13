@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.lejito.epharma.error.NotFoundError;
 import com.lejito.epharma.model.Medicine;
 import com.lejito.epharma.model.Patient;
 import com.lejito.epharma.model.Prescription;
@@ -36,7 +37,7 @@ public class PrescriptionService {
                 return prescription;
             }
         }
-        throw new RuntimeException("Prescription not found");
+        throw new NotFoundError("Prescription not found");
     }
 
     public void addPrescription(Patient patient, Medicine medicine, int quantity) {
