@@ -10,15 +10,15 @@ public class Order {
     private Patient patient;
     private List<Item> items;
     private List<Prescription> prescriptions;
-    private float price;
+    private float totalPrice;
     private OrderStatus status;
 
-    public Order(int id, Patient patient, List<Item> items, List<Prescription> prescriptions, float price) {
+    public Order(int id, Patient patient, List<Item> items, List<Prescription> prescriptions, float totalPrice) {
         this.id = id;
         this.patient = patient;
         this.items = items;
         this.prescriptions = prescriptions;
-        this.price = price;
+        this.totalPrice = totalPrice;
         this.status = OrderStatus.PENDING;
     }
 
