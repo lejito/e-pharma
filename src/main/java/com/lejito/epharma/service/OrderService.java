@@ -28,6 +28,11 @@ public class OrderService {
                 patientOrders.add(order);
             }
         }
+
+        if (patientOrders.isEmpty()) {
+            throw new NotFoundError("No orders found for this patient");
+        }
+
         return patientOrders;
     }
 

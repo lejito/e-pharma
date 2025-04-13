@@ -24,14 +24,20 @@ public class Cart {
         this.prescriptions = new ArrayList<>(cart.getPrescriptions());
     }
 
-    public void addMedicine(Medicine medicine, int quantity) {
+    public void addMedicine(Medicine medicine, int quantity, Prescription prescription) {
         if (!medicine.hasStock(quantity)) {
             throw new BadRequestError(String.format("Not enough stock for %s (only %d available)", medicine.getName(),
                     medicine.getStock()));
         }
 
         if (medicine.isPrescriptionOnly()) {
-            throw new BadRequestError(String.format("Medicine %s requires a prescription", medicine.getName()));
+            if (prescription == null) {
+                throw new BadRequestError(String.format("Medicine %s requires a prescription", medicine.getName()));
+            }
+
+            if (prescription.getMedicine().getId() != medicine.getId()) {
+                throw new BadRequestError(String.format("Prescription does not match medicine %s", medicine.getName()));
+            }
         }
 
         for (Item item : items) {
@@ -41,6 +47,10 @@ public class Cart {
             }
         }
         items.add(new Item(medicine, quantity));
+    }
+
+    public void addMedicine(Medicine medicine, int quantity) {
+        addMedicine(medicine, quantity, null);
     }
 
     public void removeMedicine(Medicine medicine, int quantity) {
@@ -71,7 +81,7 @@ public class Cart {
                 throw new BadRequestError("Prescription already exists in cart");
             }
         }
-        addMedicine(prescription.getMedicine(), prescription.getQuantity());
+        addMedicine(prescription.getMedicine(), prescription.getQuantity(), prescription);
         prescriptions.add(prescription);
     }
 
@@ -95,33 +105,14 @@ public class Cart {
         return total;
     }
 
-    public void confirm() {
+    public Cart confirm() {
         if (items.isEmpty()) {
             throw new BadRequestError("Cart is empty");
         }
 
-        List<Item> deductedItems = new ArrayList<>();
-        try {
-            for (Item item : items) {
-                item.getMedicine().decrementStock(item.getQuantity());
-                deductedItems.add(item);
-            }
-
-            for (Prescription prescription : prescriptions) {
-                prescription.setAvailable(false);
-            }
-
-            clear();
-        } catch (RuntimeException e) {
-            rollbackConfirmation(deductedItems);
-            throw e;
-        }
-    }
-
-    private void rollbackConfirmation(List<Item> deductedItems) {
-        for (Item deductedItem : deductedItems) {
-            deductedItem.getMedicine().incrementStock(deductedItem.getQuantity());
-        }
+        Cart cart = new Cart(this);
+        clear();
+        return cart;
     }
 
     private void clear() {

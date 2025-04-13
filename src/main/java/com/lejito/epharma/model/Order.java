@@ -1,5 +1,6 @@
 package com.lejito.epharma.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import lombok.Data;
@@ -23,10 +24,32 @@ public class Order {
     }
 
     public void approve() {
-        this.status = OrderStatus.APPROVED;
+        List<Item> deductedItems = new ArrayList<>();
+        try {
+            for (Item item : items) {
+                item.getMedicine().decrementStock(item.getQuantity());
+                deductedItems.add(item);
+            }
+
+            for (Prescription prescription : prescriptions) {
+                prescription.setAvailable(false);
+            }
+
+            this.status = OrderStatus.APPROVED;
+        } catch (RuntimeException e) {
+            rollbackDecrement(deductedItems);
+            throw e;
+        }
+
     }
 
     public void reject() {
         this.status = OrderStatus.REJECTED;
+    }
+
+    private void rollbackDecrement(List<Item> deductedItems) {
+        for (Item deductedItem : deductedItems) {
+            deductedItem.getMedicine().incrementStock(deductedItem.getQuantity());
+        }
     }
 }
