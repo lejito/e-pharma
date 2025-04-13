@@ -7,6 +7,7 @@ import com.lejito.epharma.dto.CartMedicineDTO;
 import com.lejito.epharma.dto.CartPrescriptionDTO;
 import com.lejito.epharma.dto.ResponseDTO;
 import com.lejito.epharma.service.MedicineService;
+import com.lejito.epharma.service.OrderService;
 import com.lejito.epharma.service.PrescriptionService;
 import com.lejito.epharma.service.UserService;
 
@@ -25,12 +26,14 @@ public class CartController {
     private final UserService userService;
     private final MedicineService medicineService;
     private final PrescriptionService prescriptionService;
+    private final OrderService orderService;
 
     public CartController(UserService userService, MedicineService medicineService,
-            PrescriptionService prescriptionService) {
+            PrescriptionService prescriptionService, OrderService orderService) {
         this.userService = userService;
         this.medicineService = medicineService;
         this.prescriptionService = prescriptionService;
+        this.orderService = orderService;
     }
 
     @GetMapping("/{idPatient}")
@@ -72,7 +75,9 @@ public class CartController {
 
     @PostMapping("/confirm/{idPatient}")
     public ResponseDTO confirmCart(@PathVariable("idPatient") int idPatient) {
+        var patient = userService.getPatient(idPatient);
         var cart = userService.confirmCart(idPatient);
-        return new ResponseDTO(true, "Cart confirmed successfully", cart, HttpStatus.OK);
+        var order = orderService.addOrder(patient, cart);
+        return new ResponseDTO(true, "Cart confirmed successfully and order created", order, HttpStatus.OK);
     }
 }
