@@ -20,12 +20,11 @@ public class UserService {
     private List<User> users;
 
     public UserService() {
-        users = new ArrayList<>(
-                List.of(
-                        new Patient(1, "John Doe", "john@example.com", "password123"),
-                        new Patient(2, "Jane Smith", "jane@example.com", "password456"),
-                        new User(3, "Admin User", "admin@example.com", "adminpass"),
-                        new Doctor(4, "The Doctor", "doctor@example.com", "doctorpass", "Cardiology")));
+        users = List.of(
+                new Patient(1, "John Doe", "john@example.com", "password123"),
+                new Patient(2, "Jane Smith", "jane@example.com", "password456"),
+                new User(3, "Admin User", "admin@example.com", "adminpass"),
+                new Doctor(4, "The Doctor", "doctor@example.com", "doctorpass", "Cardiology"));
     }
 
     public List<Patient> getPatients() {
