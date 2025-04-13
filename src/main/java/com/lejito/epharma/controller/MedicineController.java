@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.lejito.epharma.dto.AddMedicineDTO;
+import com.lejito.epharma.dto.MedicineDTO;
 import com.lejito.epharma.dto.ResponseDTO;
 import com.lejito.epharma.dto.UpdateMedicineStockDTO;
 import com.lejito.epharma.service.MedicineService;
@@ -33,7 +33,7 @@ public class MedicineController {
     }
 
     @PostMapping("/")
-    public ResponseDTO addMedicine(@Valid @RequestBody AddMedicineDTO body) {
+    public ResponseDTO addMedicine(@Valid @RequestBody MedicineDTO body) {
         var medicine = medicineService.addMedicine(body.getName(), body.getDescription(), body.getPrice(),
                 body.getStock(),
                 body.isPrescriptionOnly());

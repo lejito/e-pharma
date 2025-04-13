@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
-public class AddMedicineDTO {
+public class MedicineDTO {
     @NotNull(message = "Name is required")
     private String name;
 
