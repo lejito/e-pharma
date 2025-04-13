@@ -3,7 +3,7 @@ package com.lejito.epharma.controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.lejito.epharma.dto.CartMedicineDTO;
+import com.lejito.epharma.dto.AddMedicineDTO;
 import com.lejito.epharma.dto.CartPrescriptionDTO;
 import com.lejito.epharma.dto.ResponseDTO;
 import com.lejito.epharma.service.MedicineService;
@@ -43,7 +43,7 @@ public class CartController {
     }
 
     @PostMapping("/medicine/{idPatient}")
-    public ResponseDTO addMedicine(@PathVariable("idPatient") int idPatient, @Valid @RequestBody CartMedicineDTO body) {
+    public ResponseDTO addMedicine(@PathVariable("idPatient") int idPatient, @Valid @RequestBody AddMedicineDTO body) {
         var medicine = medicineService.getMedicine(body.getIdMedicine());
         var cart = userService.addMedicineToCart(idPatient, medicine, body.getQuantity());
         return new ResponseDTO(true, "Medicine added to cart successfully", cart, HttpStatus.OK);
@@ -51,7 +51,7 @@ public class CartController {
 
     @DeleteMapping("/medicine/{idPatient}")
     public ResponseDTO removeMedicine(@PathVariable("idPatient") int idPatient,
-            @Valid @RequestBody CartMedicineDTO body) {
+            @Valid @RequestBody AddMedicineDTO body) {
         var medicine = medicineService.getMedicine(body.getIdMedicine());
         var cart = userService.removeMedicineFromCart(idPatient, medicine, body.getQuantity());
         return new ResponseDTO(true, "Medicine removed from cart successfully", cart, HttpStatus.OK);

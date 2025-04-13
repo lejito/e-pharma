@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
-public class CartMedicineDTO {
+public class AddMedicineDTO {
     @NotNull(message = "idMedicine is required")
     private int idMedicine;
 
