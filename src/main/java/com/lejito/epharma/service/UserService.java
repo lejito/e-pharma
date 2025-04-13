@@ -22,11 +22,11 @@ public class UserService {
     private List<User> users;
 
     public UserService() {
-        users = List.of(
-                new Patient(1, "John Doe", "john@example.com", "password123"),
-                new Patient(2, "Jane Smith", "jane@example.com", "password456"),
-                new User(3, "Admin User", "admin@example.com", "adminpass"),
-                new Doctor(4, "The Doctor", "doctor@example.com", "doctorpass", "Cardiology"));
+        users = new ArrayList<>();
+        users.add(new Patient(1, "John Doe", "john@example.com", "password123"));
+        users.add(new Patient(2, "Jane Smith", "jane@example.com", "password456"));
+        users.add(new User(3, "Admin User", "admin@example.com", "adminpass"));
+        users.add(new Doctor(4, "The Doctor", "doctor@example.com", "doctorpass", "Cardiology"));
     }
 
     public List<Patient> getPatients() {
@@ -70,24 +70,28 @@ public class UserService {
         return patient.getCart();
     }
 
-    public void addMedicineToCart(int idPatient, Medicine medicine, int quantity) {
+    public Cart addMedicineToCart(int idPatient, Medicine medicine, int quantity) {
         Patient patient = getPatient(idPatient);
         patient.addMedicineToCart(medicine, quantity);
+        return patient.getCart();
     }
 
-    public void removeMedicineFromCart(int idPatient, Medicine medicine, int quantity) {
+    public Cart removeMedicineFromCart(int idPatient, Medicine medicine, int quantity) {
         Patient patient = getPatient(idPatient);
         patient.removeMedicineFromCart(medicine, quantity);
+        return patient.getCart();
     }
 
-    public void addPrescriptionToCart(int idPatient, Prescription prescription) {
+    public Cart addPrescriptionToCart(int idPatient, Prescription prescription) {
         Patient patient = getPatient(idPatient);
         patient.addPrescriptionToCart(prescription);
+        return patient.getCart();
     }
 
-    public void removePrescriptionFromCart(int idPatient, Prescription prescription) {
+    public Cart removePrescriptionFromCart(int idPatient, Prescription prescription) {
         Patient patient = getPatient(idPatient);
         patient.removePrescriptionFromCart(prescription);
+        return patient.getCart();
     }
 
     public Cart confirmCart(int idPatient) {
