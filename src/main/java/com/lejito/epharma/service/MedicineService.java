@@ -22,7 +22,7 @@ public class MedicineService {
                 new Medicine(4, "Aspirin", "Pain reliever and anti-inflammatory", 4.99f, 20, false));
     }
 
-    private Medicine getMedicine(int idMedicine) {
+    public Medicine getMedicine(int idMedicine) {
         for (Medicine medicine : medicines) {
             if (medicine.getId() == idMedicine) {
                 return medicine;
