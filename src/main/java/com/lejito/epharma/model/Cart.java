@@ -15,9 +15,19 @@ public class Cart {
         this.prescriptions = new ArrayList<>();
     }
 
+    public Cart(Cart cart) {
+        this.items = new ArrayList<>(cart.getItems());
+        this.prescriptions = new ArrayList<>(cart.getPrescriptions());
+    }
+
     public void addMedicine(Medicine medicine, int quantity) {
         if (!medicine.hasStock(quantity)) {
-            throw new RuntimeException(String.format("Not enough stock for %s", medicine.getName()));
+            throw new RuntimeException(String.format("Not enough stock for %s (only %d available)", medicine.getName(),
+                    medicine.getStock()));
+        }
+
+        if (!medicine.isPrescriptionOnly()) {
+            throw new RuntimeException(String.format("Medicine %s requires a prescription", medicine.getName()));
         }
 
         for (Item item : items) {
@@ -68,11 +78,36 @@ public class Cart {
         throw new RuntimeException("Prescription not found in cart");
     }
 
-    float calculatePrice() {
+    public float calculatePrice() {
         float total = 0;
         for (Item item : items) {
             total += item.calculatePrice();
         }
         return total;
+    }
+
+    public void confirm() {
+        List<Item> deductedItems = new ArrayList<>();
+        try {
+            for (Item item : items) {
+                item.getMedicine().decrementStock(item.getQuantity());
+                deductedItems.add(item);
+            }
+            clear();
+        } catch (RuntimeException e) {
+            rollbackConfirmation(deductedItems);
+            throw e;
+        }
+    }
+
+    private void rollbackConfirmation(List<Item> deductedItems) {
+        for (Item deductedItem : deductedItems) {
+            deductedItem.getMedicine().incrementStock(deductedItem.getQuantity());
+        }
+    }
+
+    private void clear() {
+        items.clear();
+        prescriptions.clear();
     }
 }

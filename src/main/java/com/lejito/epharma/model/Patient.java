@@ -13,4 +13,25 @@ public class Patient extends User {
         this.cart = new Cart();
     }
 
+    public void addMedicineToCart(Medicine medicine, int quantity) {
+        cart.addMedicine(medicine, quantity);
+    }
+
+    public void removeMedicineFromCart(Medicine medicine, int quantity) {
+        cart.removeMedicine(medicine, quantity);
+    }
+
+    public void addPrescriptionToCart(Prescription prescription) {
+        cart.addPrescription(prescription);
+    }
+
+    public void removePrescriptionFromCart(Prescription prescription) {
+        cart.removePrescription(prescription);
+    }
+
+    public Cart confirmCart() {
+        Cart confirmedCart = new Cart(cart);
+        cart.confirm();
+        return confirmedCart;
+    }
 }

@@ -20,11 +20,22 @@ public class Medicine {
         this.prescriptionOnly = prescriptionOnly;
     }
 
-    float calculatePrice(int quantity) {
-        return price * quantity;
+    public void incrementStock(int quantity) {
+        stock += quantity;
     }
 
-    boolean hasStock(int quantity) {
+    public void decrementStock(int quantity) {
+        if (stock < quantity) {
+            throw new RuntimeException(String.format("Not enough stock for %s (only %d available)", name, stock));
+        }
+        stock -= quantity;
+    }
+
+    public boolean hasStock(int quantity) {
         return stock >= quantity;
+    }
+
+    public float calculatePrice(int quantity) {
+        return price * quantity;
     }
 }
