@@ -40,13 +40,13 @@ public class PrescriptionController {
     }
 
     @GetMapping("/{idPrescription}")
-    public ResponseDTO getPrescription(int idPrescription) {
+    public ResponseDTO getPrescription(@PathVariable("idPrescription") int idPrescription) {
         var prescription = prescriptionService.getPrescription(idPrescription);
         return new ResponseDTO(true, "Prescription fetched successfully", prescription, HttpStatus.OK);
     }
 
     @GetMapping("/patient/{idPatient}")
-    public ResponseDTO getPrescriptionsByPatient(int idPatient) {
+    public ResponseDTO getPrescriptionsByPatient(@PathVariable("idPatient") int idPatient) {
         var prescriptions = prescriptionService.getPrescriptions(idPatient);
         return new ResponseDTO(true, "Prescriptions fetched successfully", prescriptions, HttpStatus.OK);
     }

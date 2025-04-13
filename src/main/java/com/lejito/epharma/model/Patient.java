@@ -24,7 +24,7 @@ public class Patient extends User {
     }
 
     public void addPrescriptionToCart(Prescription prescription) {
-        if (prescription.getPatient().getId() != this.getId()) {
+        if (prescription.getIdPatient() != this.getId()) {
             throw new BadRequestError("Prescription does not belong to this patient");
         }
         cart.addPrescription(prescription);

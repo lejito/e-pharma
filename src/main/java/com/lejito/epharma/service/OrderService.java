@@ -24,7 +24,7 @@ public class OrderService {
     public List<Order> getOrders(int idPatient) {
         List<Order> patientOrders = new ArrayList<>();
         for (Order order : orders) {
-            if (order.getPatient().getId() == idPatient) {
+            if (order.getIdPatient() == idPatient) {
                 patientOrders.add(order);
             }
         }
@@ -42,7 +42,7 @@ public class OrderService {
 
     public Order addOrder(Patient patient, Cart cart) {
         int id = orders.size() + 1;
-        Order order = new Order(id, patient, cart.getItems(), cart.getPrescriptions(), cart.calculatePrice());
+        Order order = new Order(id, patient.getId(), cart.getItems(), cart.getPrescriptions(), cart.calculatePrice());
         orders.add(order);
         return order;
     }

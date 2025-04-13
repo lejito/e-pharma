@@ -24,7 +24,7 @@ public class PrescriptionService {
     public List<Prescription> getPrescriptions(int idPatient) {
         List<Prescription> patientPrescriptions = new ArrayList<>();
         for (Prescription prescription : prescriptions) {
-            if (prescription.getPatient().getId() == idPatient) {
+            if (prescription.getIdPatient() == idPatient) {
                 patientPrescriptions.add(prescription);
             }
         }
@@ -42,7 +42,7 @@ public class PrescriptionService {
 
     public Prescription addPrescription(Patient patient, Medicine medicine, int quantity) {
         int id = prescriptions.size() + 1;
-        Prescription prescription = new Prescription(id, patient, medicine, quantity);
+        Prescription prescription = new Prescription(id, patient.getId(), medicine, quantity);
         prescriptions.add(prescription);
         return prescription;
     }
