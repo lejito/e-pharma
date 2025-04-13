@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.lejito.epharma.model.Cart;
+import com.lejito.epharma.model.Doctor;
 import com.lejito.epharma.model.Medicine;
 import com.lejito.epharma.model.Patient;
 import com.lejito.epharma.model.Prescription;
@@ -16,7 +17,16 @@ import lombok.Data;
 @Service
 @Data
 public class UserService {
-    private List<User> users = new ArrayList<>();
+    private List<User> users;
+
+    public UserService() {
+        users = new ArrayList<>(
+                List.of(
+                        new Patient(1, "John Doe", "john@example.com", "password123"),
+                        new Patient(2, "Jane Smith", "jane@example.com", "password456"),
+                        new User(3, "Admin User", "admin@example.com", "adminpass"),
+                        new Doctor(4, "The Doctor", "doctor@example.com", "doctorpass", "Cardiology")));
+    }
 
     public List<Patient> getPatients() {
         List<Patient> patients = new ArrayList<>();
