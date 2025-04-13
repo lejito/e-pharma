@@ -42,8 +42,7 @@ public class CartController {
     @PostMapping("/medicine/{idPatient}")
     public ResponseDTO addMedicine(@PathVariable("idPatient") int idPatient, @Valid @RequestBody CartMedicineDTO body) {
         var medicine = medicineService.getMedicine(body.getIdMedicine());
-        userService.addMedicineToCart(idPatient, medicine, body.getQuantity());
-        var cart = userService.getCart(idPatient);
+        var cart = userService.addMedicineToCart(idPatient, medicine, body.getQuantity());
         return new ResponseDTO(true, "Medicine added to cart successfully", cart, HttpStatus.OK);
     }
 
@@ -51,8 +50,7 @@ public class CartController {
     public ResponseDTO removeMedicine(@PathVariable("idPatient") int idPatient,
             @Valid @RequestBody CartMedicineDTO body) {
         var medicine = medicineService.getMedicine(body.getIdMedicine());
-        userService.removeMedicineFromCart(idPatient, medicine, body.getQuantity());
-        var cart = userService.getCart(idPatient);
+        var cart = userService.removeMedicineFromCart(idPatient, medicine, body.getQuantity());
         return new ResponseDTO(true, "Medicine removed from cart successfully", cart, HttpStatus.OK);
     }
 
@@ -60,8 +58,7 @@ public class CartController {
     public ResponseDTO addPrescription(@PathVariable("idPatient") int idPatient,
             @Valid @RequestBody CartPrescriptionDTO body) {
         var prescription = prescriptionService.getPrescription(body.getIdPrescription());
-        userService.addPrescriptionToCart(idPatient, prescription);
-        var cart = userService.getCart(idPatient);
+        var cart = userService.addPrescriptionToCart(idPatient, prescription);
         return new ResponseDTO(true, "Prescription added to cart successfully", cart, HttpStatus.OK);
     }
 
@@ -69,8 +66,7 @@ public class CartController {
     public ResponseDTO removePrescription(@PathVariable("idPatient") int idPatient,
             @Valid @RequestBody CartPrescriptionDTO body) {
         var prescription = prescriptionService.getPrescription(body.getIdPrescription());
-        userService.removePrescriptionFromCart(idPatient, prescription);
-        var cart = userService.getCart(idPatient);
+        var cart = userService.removePrescriptionFromCart(idPatient, prescription);
         return new ResponseDTO(true, "Prescription removed from cart successfully", cart, HttpStatus.OK);
     }
 
