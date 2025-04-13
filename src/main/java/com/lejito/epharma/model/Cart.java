@@ -106,6 +106,11 @@ public class Cart {
                 item.getMedicine().decrementStock(item.getQuantity());
                 deductedItems.add(item);
             }
+
+            for (Prescription prescription : prescriptions) {
+                prescription.setAvailable(false);
+            }
+
             clear();
         } catch (RuntimeException e) {
             rollbackConfirmation(deductedItems);
