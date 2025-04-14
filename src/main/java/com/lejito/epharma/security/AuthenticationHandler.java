@@ -38,7 +38,6 @@ public class AuthenticationHandler extends BaseVerificationHandler {
         System.out.println("AUTH: Checking authentication...");
         HttpServletRequest request = context.getRequest();
         String token = request.getHeader("Authorization");
-        System.out.println("AUTH: Token: " + token);
         if (token == null || !authService.validateToken(token.replace("Bearer ", ""))) {
             return false;
         }
