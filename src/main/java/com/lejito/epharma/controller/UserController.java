@@ -5,6 +5,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.lejito.epharma.dto.LoginDTO;
 import com.lejito.epharma.dto.ResponseDTO;
+import com.lejito.epharma.security.AuthenticationHandler;
+import com.lejito.epharma.security.SkipHandler;
 import com.lejito.epharma.service.UserService;
 
 import jakarta.validation.Valid;
@@ -43,6 +45,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
+    @SkipHandler(AuthenticationHandler.class)
     public ResponseDTO login(@Valid @RequestBody LoginDTO body) {
         var user = userService.login(body.getEmail(), body.getPassword());
         return new ResponseDTO(true, "Login successful", user, HttpStatus.OK);
