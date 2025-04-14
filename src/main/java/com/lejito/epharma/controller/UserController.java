@@ -7,6 +7,7 @@ import com.lejito.epharma.dto.LoginDTO;
 import com.lejito.epharma.dto.ResponseDTO;
 import com.lejito.epharma.security.AuthenticationHandler;
 import com.lejito.epharma.security.SkipHandler;
+import com.lejito.epharma.service.AuthService;
 import com.lejito.epharma.service.UserService;
 
 import jakarta.validation.Valid;
@@ -21,9 +22,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 @RequestMapping("/users")
 public class UserController {
     private final UserService userService;
+    private final AuthService authService;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, AuthService authService) {
         this.userService = userService;
+        this.authService = authService;
     }
 
     @GetMapping("/")
@@ -48,6 +51,7 @@ public class UserController {
     @SkipHandler(AuthenticationHandler.class)
     public ResponseDTO login(@Valid @RequestBody LoginDTO body) {
         var user = userService.login(body.getEmail(), body.getPassword());
-        return new ResponseDTO(true, "Login successful", user, HttpStatus.OK);
+        var token = authService.generateToken(String.valueOf(user.getId()));
+        return new ResponseDTO(true, "Login successful and token generated", token, HttpStatus.OK);
     }
 }

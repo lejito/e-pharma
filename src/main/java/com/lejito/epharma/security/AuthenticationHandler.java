@@ -5,11 +5,18 @@ import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerMapping;
 
 import com.lejito.epharma.error.UnauthorizedError;
+import com.lejito.epharma.service.AuthService;
 
 import jakarta.servlet.http.HttpServletRequest;
 
 @Component
 public class AuthenticationHandler extends BaseVerificationHandler {
+    private AuthService authService;
+
+    public AuthenticationHandler(AuthService authService) {
+        this.authService = authService;
+    }
+
     @Override
     public void handle(RequestContext context) {
         HttpServletRequest request = context.getRequest();
@@ -20,8 +27,8 @@ public class AuthenticationHandler extends BaseVerificationHandler {
             return;
         }
 
-
         if (!isAuthenticated(context)) {
+            System.out.println("AUTH: Authentication failed.");
             throw new UnauthorizedError("AUTH: Authentication failed");
         }
         next(context);
@@ -29,6 +36,11 @@ public class AuthenticationHandler extends BaseVerificationHandler {
 
     private boolean isAuthenticated(RequestContext context) {
         System.out.println("AUTH: Checking authentication...");
+        HttpServletRequest request = context.getRequest();
+        String token = request.getHeader("Authorization");
+        if (token == null || !authService.validateToken(token)) {
+            return false;
+        }
         return true;
     }
 
